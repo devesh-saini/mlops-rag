@@ -1,0 +1,192 @@
+/* General page styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000;
+    text-align: center;
+    overflow: hidden; /* Prevents scrollbars from watermark */
+}
+
+/* Main container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Pushes header up, nav down */
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box; /* Ensures padding doesn't break layout */
+    position: relative;
+    z-index: 1;
+}
+
+/* Header and Logo */
+header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* For absolute positioning of children */
+    padding-top: 10px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo img {
+    height: 30px; /* Adjust size as needed */
+}
+
+.build-portfolio-btn {
+    position: absolute;
+    left: 20px; /* Aligns to the left */
+    top: 10px;
+    background: #f1f1f1;
+    border: 1px solid #e8e8e8;
+    border-radius: 20px; /* Pill shape */
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.build-portfolio-btn:hover {
+    background: #e8e8e8;
+}
+
+/* Main content (Avatar, Titles, Chat) */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 80px; /* Space for the bottom nav */
+}
+
+.greeting {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #444;
+    margin: 0;
+}
+
+@media(min-width: 768px) {
+    h1 {
+        font-size: 80px; /* Large text */
+        font-weight: 800; /* Extra bold */
+        margin: 10px 0;
+    }
+}
+
+.avatar {
+    width: 240px; /* Adjust size as needed */
+    height: auto;
+    margin: 25px 0;
+    /* The avatar in the image is a 3D model, 
+       this placeholder is for a standard 2D image. */
+}
+
+/* Chat Bar */
+.chat-bar {
+    display: flex;
+    width: 100%;
+    max-width: 550px;
+    margin: 20px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 30px; /* Rounded bar */
+    padding: 6px;
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.chat-bar input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: transparent;
+}
+
+.chat-bar button {
+    background: #007aff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Circular button */
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.chat-bar button:hover {
+    background: #0056b3;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+    position: absolute; /* Fixes nav to the bottom */
+    bottom: 20px;
+}
+
+.nav-button {
+    flex: 1; /* Each button takes equal space */
+    background: #fdfdfd;
+    border: 1px solid #e8e8e8;
+    border-radius: 15px; /* Rounded rectangle */
+    padding: 15px 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-button:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.nav-button span {
+    font-size: 24px; /* Emoji size */
+}
+
+/* Background Watermark */
+.watermark {
+    position: absolute;
+    bottom: 40px; /* Position above the nav */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14rem; /* Very large text */
+    font-weight: 800;
+    color: #000;
+    opacity: 0.03; /* Very faint */
+    z-index: -1; /* Behind everything */
+    user-select: none; /* Not selectable */
+    pointer-events: none; /* Click-through */
+}
