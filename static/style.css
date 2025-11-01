@@ -7,7 +7,9 @@ body, html {
     background-color: #ffffff;
     color: #000;
     text-align: center;
-    overflow: hidden; /* Prevents scrollbars from watermark */
+    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Main container */
@@ -15,22 +17,25 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Pushes header up, nav down */
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box; /* Ensures padding doesn't break layout */
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: 20px; /* Base padding */
+    box-sizing: border-box;
     position: relative;
     z-index: 1;
+    max-width: 800px; /* Limit overall width for larger screens */
+    margin: 0 auto; /* Center the container on wider screens */
 }
 
 /* Header and Logo */
 header {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center logo by default */
     align-items: center;
-    position: relative; /* For absolute positioning of children */
+    position: relative;
     padding-top: 10px;
+    margin-bottom: 20px; /* Add some space below header */
 }
 
 .logo {
@@ -40,15 +45,17 @@ header {
 
 .logo img {
     height: 30px; /* Adjust size as needed */
+    vertical-align: middle;
 }
 
 .build-portfolio-btn {
     position: absolute;
-    left: 20px; /* Aligns to the left */
-    top: 10px;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     background: #f1f1f1;
     border: 1px solid #e8e8e8;
-    border-radius: 20px; /* Pill shape */
+    border-radius: 20px;
     padding: 8px 16px;
     font-size: 14px;
     font-weight: 500;
@@ -56,11 +63,22 @@ header {
     text-decoration: none;
     color: #333;
     transition: background-color 0.2s;
+    display: flex; /* Allow icon and text to align */
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .build-portfolio-btn:hover {
     background: #e8e8e8;
 }
+
+.build-portfolio-btn svg {
+    height: 16px;
+    width: 16px;
+    fill: #333;
+}
+
 
 /* Main content (Avatar, Titles, Chat) */
 main {
@@ -68,8 +86,9 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding-bottom: 80px; /* Space for the bottom nav */
+    justify-content: center; /* Center vertically in available space */
+    padding: 20px 0; /* Add some vertical padding */
+    width: 100%;
 }
 
 .greeting {
@@ -79,33 +98,31 @@ main {
     margin: 0;
 }
 
-@media(min-width: 768px) {
-    h1 {
-        font-size: 80px; /* Large text */
-        font-weight: 800; /* Extra bold */
-        margin: 10px 0;
-    }
+h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 10px 0 16px 0; /* Adjusted bottom margin */
+    line-height: 1.1;
 }
 
 .avatar {
-    width: 240px; /* Adjust size as needed */
+    width: 360px;
     height: auto;
-    margin: 25px 0;
-    /* The avatar in the image is a 3D model, 
-       this placeholder is for a standard 2D image. */
+    margin: 16px 0;
 }
 
 /* Chat Bar */
 .chat-bar {
     display: flex;
     width: 100%;
-    max-width: 550px;
-    margin: 20px 0;
+    max-width: 550px; /* Max width for chat bar */
+    margin: 0px auto; /* Center horizontally */
     border: 1px solid #e0e0e0;
-    border-radius: 30px; /* Rounded bar */
+    border-radius: 30px;
     padding: 6px;
     background: #ffffff;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .chat-bar input {
@@ -118,10 +135,10 @@ main {
 }
 
 .chat-bar button {
-    background: #007aff; /* Blue button */
+    background: #007aff;
     color: white;
     border: none;
-    border-radius: 50%; /* Circular button */
+    border-radius: 50%;
     width: 44px;
     height: 44px;
     font-size: 24px;
@@ -131,6 +148,7 @@ main {
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .chat-bar button:hover {
@@ -144,15 +162,17 @@ main {
     gap: 10px;
     width: 100%;
     max-width: 600px;
-    position: absolute; /* Fixes nav to the bottom */
-    bottom: 20px;
+    margin-top: 20px; /* Space between chat bar and nav */
+    padding-bottom: 20px; /* Ensure space at the very bottom */
+    flex-wrap: wrap; /* Allow buttons to wrap on very small screens */
 }
 
 .nav-button {
-    flex: 1; /* Each button takes equal space */
+    flex: 1;
+    min-width: 90px; /* Minimum width for buttons */
     background: #fdfdfd;
     border: 1px solid #e8e8e8;
-    border-radius: 15px; /* Rounded rectangle */
+    border-radius: 15px;
     padding: 15px 10px;
     text-decoration: none;
     color: #333;
@@ -164,6 +184,7 @@ main {
     font-size: 14px;
     transition: all 0.2s;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
 
 .nav-button:hover {
@@ -173,20 +194,166 @@ main {
 }
 
 .nav-button span {
-    font-size: 24px; /* Emoji size */
+    font-size: 24px;
 }
 
 /* Background Watermark */
 .watermark {
     position: absolute;
-    bottom: 40px; /* Position above the nav */
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 14rem; /* Very large text */
+    font-size: 14rem;
     font-weight: 800;
     color: #000;
-    opacity: 0.03; /* Very faint */
-    z-index: -1; /* Behind everything */
-    user-select: none; /* Not selectable */
-    pointer-events: none; /* Click-through */
+    opacity: 0.03;
+    z-index: -1;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap; /* Prevent watermark from wrapping */
+}
+
+/* ---------------------------------- */
+/* --- Responsive Adjustments --- */
+/* ---------------------------------- */
+
+/* For screens smaller than 768px (common tablet portrait / large phone) */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .build-portfolio-btn {
+        left: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    .build-portfolio-btn svg {
+        height: 14px;
+        width: 14px;
+    }
+
+    h1 {
+        font-size: 3.2rem; /* Slightly smaller title */
+    }
+
+    .avatar {
+        width: 400px; /* Smaller avatar */
+    }
+
+    .chat-bar {
+        max-width: 90%; /* Allow chat bar to take more width */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .chat-bar input {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+
+    .chat-bar button {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .bottom-nav {
+        gap: 8px;
+        max-width: 100%; /* Allow nav to take full width */
+        padding: 0 15px 15px 15px; /* Adjust padding for nav */
+    }
+
+    .nav-button {
+        padding: 12px 8px;
+        font-size: 13px;
+        min-width: 70px; /* Even smaller min-width for buttons */
+    }
+
+    .nav-button span {
+        font-size: 20px; /* Smaller emojis */
+    }
+
+    .watermark {
+        font-size: 10rem; /* Smaller watermark */
+        bottom: 30px;
+    }
+}
+
+/* For screens smaller than 480px (common phone portrait) */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column; /* Stack header elements */
+        align-items: flex-start; /* Align to the left */
+        margin-bottom: 30px; /* More space after header */
+    }
+
+    .build-portfolio-btn {
+        position: static; /* Remove absolute positioning */
+        transform: none;
+        margin-bottom: 15px; /* Space between button and logo */
+        left: auto; /* Reset left property */
+        width: fit-content; /* Only take content width */
+    }
+
+    .logo {
+        position: static; /* Remove absolute positioning */
+        transform: none;
+        align-self: center; /* Center the logo if not absolutely positioned */
+    }
+    .logo img {
+        height: 25px; /* Smaller logo */
+    }
+
+    h1 {
+        font-size: 2.8rem; /* Even smaller title */
+        margin-top: 0;
+    }
+
+    .avatar {
+        width: 400px; /* Even smaller avatar */
+        margin: 20px 0;
+    }
+
+    .chat-bar {
+        max-width: 95%; /* Almost full width */
+        padding: 4px; /* Smaller padding */
+    }
+
+    .chat-bar input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .chat-bar button {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+
+    .bottom-nav {
+        display: block;
+        gap: 6px;
+        padding: 0 10px 10px 10px;
+    }
+
+    .nav-button {
+        padding: 10px 5px;
+        margin: 8px;
+        font-size: 12px;
+        min-width: 60px; /* Smallest min-width for buttons */
+    }
+
+    .nav-button span {
+        font-size: 18px; /* Smallest emojis */
+    }
+
+    .watermark {
+        font-size: 8rem; /* Smallest watermark */
+        bottom: 20px;
+    }
 }
