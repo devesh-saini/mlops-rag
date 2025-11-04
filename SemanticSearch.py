@@ -37,7 +37,7 @@ vector2 = embeddings.embed_query(all_splits[1].page_content)
 
 assert len(vector1) == len(vector2)
 print(f"Generated vectors of length: {len(vector2)}")
-#print(vector1[:10])
+print(vector1[:10])
 
 
 ####
@@ -50,14 +50,9 @@ vector_store = Chroma(
     persist_directory="./aboutMe_vector_db"
 )
 
+vector_store.add_documents(all_splits)
 
-####
-## Adding Docs to "aboutMe" collection.
-####
-
-userQuery = input("=> ")
-results = vector_store.similarity_search(
-            userQuery
-        )
-
-print(results[0])
+while True:
+    query = input("=> ")
+    results = vector_store.similarity_search(query)
+    print(results[0])
