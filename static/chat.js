@@ -7,4 +7,8 @@ function expand() {
     const header = document.querySelector("header");
     header.innerHTML = "";
     header.style.margin = "0";
+    header.style.position = "absolute";
+
+    const avatar = document.querySelector(".avatar");
+    avatar.style.width = "120px";
 }

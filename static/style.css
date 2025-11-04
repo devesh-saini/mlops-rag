@@ -55,7 +55,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center vertically in available space */
+    justify-content: space-between; /* Center vertically in available space */
     padding: 0px 0; /* Add some vertical padding */
     width: 100%;
 }
@@ -78,6 +78,10 @@ h1 {
     width: 392px;
     height: auto;
     margin: 20px 0;
+}
+.chat-area {
+    max-width: 800px;
+    height: 0;
 }
 
 /* Chat Bar */
