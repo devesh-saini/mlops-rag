@@ -24,12 +24,14 @@
         </header>
 
         <main>
-            <img src="{{ url_for('static', filename='landing-memojis.webp') }}" alt="Devesh's Avatar" class="avatar">
-            <div class="chat-area"></div>
-            <div class="chat-bar">
-                <input type="text" class="chat-bar-text" placeholder="Ask me anything...">
-                <button type="submit" id="submit-button">→</button>
-            </div>
+            <form method="POST" action="/getResponse">
+                <img src="{{ url_for('static', filename='landing-memojis.webp') }}" alt="Devesh's Avatar" class="avatar">
+                <div class="chat-area"></div>
+                <div class="chat-bar">
+                    <input type="text" class="chat-bar-text" name="userQuery" placeholder="Ask me anything...">
+                    <button type="submit" id="submit-button">→</button>
+                </div>
+            </form>
         </main>
 
         <nav class="bottom-nav">
