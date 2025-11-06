@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, render_template
+from ollama import Client
 
 app = Flask(__name__)
 
@@ -6,12 +7,11 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-@app.route("/getResponse", methods=["POST"])
+@app.route("/getResponse", methods=["GET"])
 def getResponse():
-    if request.method == "POST":
-        userQuery = request.form['userQuery']
-        print(f"{userQuery}")
-        return "Hello."
+    userQuery = request.form['userQuery']
+    print(userQuery)
+    return userQuery
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)

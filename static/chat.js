@@ -41,7 +41,7 @@ function expand() {
     chat_bar_text.value = "";
     
     chat_area.value = user_query
-    // fetchResult(userQuery);
+    fetchResult(userQuery);
 }
 
 async function fetchResult(userQuery) {
