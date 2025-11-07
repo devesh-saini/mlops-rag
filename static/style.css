@@ -81,6 +81,76 @@ h1 {
 .chat-area {
     max-width: 800px;
     height: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    overflow-y: auto; /* Allow scrolling */
+    padding: 16px;
+    box-sizing: border-box; /* Ensures padding doesn't break layout */
+}
+
+/* Styles for the chat messages */
+.message {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.user-message {
+    width: 100%;
+    text-align: left;
+    font-weight: 500;
+    padding: 16px;
+}
+
+.ai-message {
+    background-color: #fbfbfb; /* A light grey background for AI */
+    border-radius: 12px;
+    padding: 8px 16px;
+    text-align: justify;
+}
+
+/* --- Styles for Markdown formatting --- */
+
+.ai-message p {
+    margin-bottom: 1em; /* Spacing between paragraphs */
+}
+
+.ai-message ul,
+.ai-message ol {
+    padding-left: 20px; /* Indent lists */
+    margin-bottom: 1em;
+}
+
+.ai-message li {
+    margin-bottom: 0.5em; /* Spacing for list items */
+}
+
+/* This is for code blocks (```code```) */
+.ai-message pre {
+    background-color: #202124; /* Dark background for code */
+    color: #e8eaed; /* Light text for code */
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto; /* Allow horizontal scrolling for long code */
+    font-family: 'Menlo', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* This is for inline code (`code`) */
+.ai-message code {
+    background-color: #e8eaed;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-family: 'Menlo', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.ai-message blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 16px;
+    margin-left: 0;
+    font-style: italic;
+    color: #555;
 }
 
 /* Chat Bar */
@@ -95,13 +165,6 @@ h1 {
     background: #ffffff;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
     box-sizing: border-box; /* Include padding in width calculation */
-}
-
-.user {
-    text-align: right;
-    self-align: right;
-    width: 75%;
-    font-size: 16px;
 }
 
 .chat-bar input {
