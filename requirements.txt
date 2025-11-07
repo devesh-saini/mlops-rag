@@ -1,3 +1,4 @@
 flask
-langchain-ollama
 langchain-core
+langchain-groq
+vercel-flask
