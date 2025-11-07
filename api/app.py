@@ -154,7 +154,7 @@ def getResponse():
                     yield chunk.content
         except Exception as e:
             print(f"Error during model streaming: {e}")
-            yield "Sorry, an error occurred while streaming the response from Groq."
+            yield "Sorry, an error occurred while streaming the response from Fireworks."
 
     return Response(stream_generator(userQuery), mimetype='text/plain')
 
