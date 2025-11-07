@@ -1,4 +1,4 @@
 flask
 langchain-core
-langchain-groq
+langchain-fireworks
 vercel-flask

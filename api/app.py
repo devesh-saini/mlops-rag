@@ -1,20 +1,15 @@
 import os
 from flask import Flask, jsonify, request, render_template, Response
-from langchain_groq import ChatGroq               # NEW: Import ChatGroq
-from langchain_core.prompts import ChatPromptTemplate # NEW: Import prompt templates
+from langchain_fireworks import ChatFireworks
+from langchain_core.prompts import ChatPromptTemplate
 
-# --- 1. CONFIGURE FLASK FOR VERCEL ---
-# We must tell Flask where to find the 'static' and 'templates' folders
-# now that 'app.py' is inside the '/api' directory.
+
 app = Flask(
     __name__,
-    static_folder='../static',      # Go up one level to find 'static'
-    template_folder='../templates'  # Go up one level to find 'templates'
+    static_folder='../static',
+    template_folder='../templates'
 )
 
-# --- 2. PASTE YOUR 1,221-TOKEN SYSTEM PROMPT ---
-# This replaces your custom model file.
-# The AI will read this *every time* and adopt this persona.
 SYSTEM_PROMPT = """
 Emulate the persona of Devesh Saini, a final-year Computer Science student, AI Engineer, and technical community leader. Your responses must reflect his specific knowledge, hands-on experience, and communication style as detailed below.
 
@@ -113,26 +108,19 @@ College: 7.8 CGPA
 12th class: 84.4%
 """
 
-# --- 3. INITIALIZE THE GROQ MODEL & CHAIN ---
 try:
-    # Initialize the Groq Chat Model
     chat = ChatGroq(
-        temperature=0.2, # The low temp you wanted for factuality
-        model_name="llama3-8b-8192", # A great, fast model on Groq
-        
-        # This is the most important part.
-        # It securely gets your API key from Vercel's "Environment Variables"
-        groq_api_key=os.environ.get("GROQ_API_KEY") 
+        temperature=0.2,
+        model_name="accounts/fireworks/models/llama-v2-7b-chat",
+        groq_api_key=os.environ.get("FIREWORKS_API_KEY")
     )
 
-    # Create the prompt template that combines the system prompt and user query
     prompt = ChatPromptTemplate.from_messages([
         ("system", SYSTEM_PROMPT),
-        ("human", "{user_query}")   # This '{user_query}' must match the variable we send later
+        ("human", "{user_query}")
     ])
 
-    # Create the final chain by piping the prompt into the model
-    chain = prompt | chat 
+    chain = prompt | chat
     print("Groq chain initialized successfully.")
 
 except Exception as e:
@@ -140,23 +128,19 @@ except Exception as e:
     print("!!! MAKE SURE YOU HAVE SET THE 'GROQ_API_KEY' ENVIRONMENT VARIABLE IN VERCEL !!!")
     chain = None
 
-# --- 4. FLASK ROUTES (Mostly unchanged) ---
 
 @app.route("/")
 def home():
-    # This still works because we set 'template_folder' above
     return render_template("index.html")
 
 @app.route("/getResponse", methods=["POST"])
 def getResponse():
-    # We now check if the 'chain' is initialized, not the 'model'
     if chain is None:
         return jsonify({"error": "Model chain is not initialized."}), 500
 
-    # This part is identical to your old code
     data = request.json
     userQuery = data.get('userQuery')
-    
+
     if not userQuery:
         return jsonify({"error": "No userQuery provided."}), 400
 
@@ -165,9 +149,6 @@ def getResponse():
     def stream_generator(query):
         """A generator function to stream the model's response."""
         try:
-            # --- THIS IS THE KEY LOGIC CHANGE ---
-            # We now stream the 'chain' and pass a dictionary
-            # that matches the variable in our prompt template.
             for chunk in chain.stream({"user_query": query}):
                 if chunk.content:
                     yield chunk.content
@@ -175,11 +156,7 @@ def getResponse():
             print(f"Error during model streaming: {e}")
             yield "Sorry, an error occurred while streaming the response from Groq."
 
-    # Pass the user's query to the generator
     return Response(stream_generator(userQuery), mimetype='text/plain')
 
-# This part is optional but good for local testing
 if __name__ == "__main__":
-    # You'll need to set the GROQ_API_KEY locally to test this
-    # e.g., run 'export GROQ_API_KEY=your-key' in your terminal first
     app.run(debug=True)
