@@ -38,23 +38,27 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-button">
+            <a href="#" class="nav-button" id="me-button">
                 <span>🙂</span>
                 Me
             </a>
-            <a href="#" class="nav-button">
+            <a href="#" class="nav-button" id="projects-button">
                 <span>🛍️</span>
                 Projects
             </a>
-            <a href="#" class="nav-button">
+            <a href="#" class="nav-button" id="skills-button">
                 <span>🪁</span>
                 Skills
             </a>
-            <a href="#" class="nav-button">
+            <a href="#" class="nav-button" id="contact-button">
                 <span>👤</span>
                 Contact
             </a>
-        </nav>
+            <a href="{{ url_for('static', filename='Resume.pdf') }}" class="nav-button" id="resume-button" download="Resume.pdf">
+                <span>📄</span>
+                Resume
+            </a>
+        </nav> 
     </div>
 </body>
 </html>

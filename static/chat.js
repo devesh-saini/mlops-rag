@@ -3,34 +3,58 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatForm = document.querySelector("main form");
     const chatBarText = document.querySelector(".chat-bar-text");
 
-    // Handle click on submit button
+    // --- 1. Event Listeners for FORM submission (unchanged) ---
     submitButton.addEventListener("click", (event) => {
         handleChatSubmit(event);
     });
 
-    // Handle 'Enter' key press in the input field
     chatForm.addEventListener("submit", (event) => {
         handleChatSubmit(event);
     });
     
-    // Also capture 'Enter' keydown on the input to be safe
     chatBarText.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey) { // Check for Enter, but not Shift+Enter
+        if (event.key === "Enter" && !event.shiftKey) {
             handleChatSubmit(event);
         }
+    });
+
+    // --- 2. NEW: Event Listeners for NAV BUTTONS ---
+
+    // Define the prompts for each button
+    const navButtonPrompts = {
+        "me-button": "Introduce yourself.",
+        "projects-button": "Show me your projects.",
+        "skills-button": "What are your skills?",
+        "contact-button": "How can I contact you?"
+    };
+
+    // Find all nav buttons and add listeners
+    document.querySelectorAll(".nav-button").forEach(button => {
+        button.addEventListener("click", (event) => {
+            
+            if (button.id === "resume-button") {
+                return;
+            }
+
+            event.preventDefault(); // Stop the <a> tag from jumping to #
+            
+            // Get the prompt associated with this button's ID
+            const userQuery = navButtonPrompts[button.id];
+            
+            if (userQuery) {
+                // Send the programmatic message
+                submitQuery(userQuery);
+            }
+        });
     });
 });
 
 let isFirstMessage = true; // To track if we need to run the 'expand' animation
 
-function handleChatSubmit(event) {
-    // --- FIX 1: Stop the form from reloading the page ---
-    event.preventDefault();
-
-    const chatBarText = document.querySelector(".chat-bar-text");
-    const userQuery = chatBarText.value.trim();
-
-    if (!userQuery) {
+// --- 3. REFACTORED: The old 'handleChatSubmit' is now 'submitQuery' ---
+// This new "master" function can be called by *any* part of our code.
+function submitQuery(userQuery) {
+    if (!userQuery || userQuery.trim() === "") {
         return; // Don't send empty messages
     }
 
@@ -42,8 +66,7 @@ function handleChatSubmit(event) {
 
     const chatArea = document.querySelector(".chat-area");
 
-    // --- FIX 2: Display the user's query ---
-    // We create a new div for each message
+    // Display the user's query
     const userMessageDiv = document.createElement('div');
     userMessageDiv.className = 'message user-message';
     userMessageDiv.textContent = userQuery;
@@ -58,12 +81,28 @@ function handleChatSubmit(event) {
     // Scroll to the bottom of the chat area
     chatArea.scrollTop = chatArea.scrollHeight;
     
-    // Clear the input bar
-    chatBarText.value = "";
-    
-    // --- FIX 3: Call fetchResult and pass the AI's message element ---
+    // Call fetchResult to get the AI response
     fetchResult(userQuery, aiMessageDiv);
 }
+
+// --- 4. UPDATED: The 'handleChatSubmit' function is now much simpler ---
+// It just handles the *form event* and passes the work to 'submitQuery'
+function handleChatSubmit(event) {
+    // Stop the form from reloading the page
+    event.preventDefault();
+
+    const chatBarText = document.querySelector(".chat-bar-text");
+    const userQuery = chatBarText.value.trim();
+
+    // Call our new master function
+    submitQuery(userQuery);
+
+    // Clear the input bar
+    chatBarText.value = "";
+}
+
+
+// --- 5. UNCHANGED: Your other functions ---
 
 function expandUI() {
     // This is your animation code, unchanged
@@ -98,40 +137,26 @@ async function fetchResult(userQuery, aiMessageDiv) {
     aiMessageDiv.textContent = "";
 
     const chatArea = document.querySelector(".chat-area");
-    let fullResponse = "";  // This variable will buffer the raw text
-    let isStreamDone = false; // Flag to tell our render loop when to stop
+    let fullResponse = "";
+    let isStreamDone = false; 
 
-    // --- 1. The Render Function ---
-    // This function will be called on a timer.
-    // It reads the buffer and updates the HTML.
     function renderMarkdown() {
-        if (fullResponse.length === 0) return; // Don't render an empty string
+        if (fullResponse.length === 0) return; 
 
-        // Convert the current buffer to HTML
         const htmlResponse = marked.parse(fullResponse);
-        // Sanitize it
         const sanitizedHtml = DOMPurify.sanitize(htmlResponse);
-        // Update the DOM
         aiMessageDiv.innerHTML = sanitizedHtml;
 
-        // Auto-scroll to the bottom
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    // --- 2. The "Render Loop" ---
-    // Start an interval that runs our render function
-    // 10 times per second (every 100 milliseconds).
     const renderInterval = setInterval(() => {
         renderMarkdown();
-        
-        // If the stream is done, stop this loop
         if (isStreamDone) {
             clearInterval(renderInterval);
         }
     }, 100);
 
-    // --- 3. The "Fetch Loop" (Your existing code) ---
-    // This runs as fast as possible, just updating the buffer.
     try {
         const response = await fetch('/getResponse', {
             method: 'POST',
@@ -150,31 +175,21 @@ async function fetchResult(userQuery, aiMessageDiv) {
 
         while (true) {
             const { done, value } = await reader.read();
-            
             if (done) {
-                isStreamDone = true; // Tell the render loop we're done
-                break; // Exit the fetch loop
+                isStreamDone = true;
+                break;
             }
-            
             const chunk = decoder.decode(value);
-            fullResponse += chunk; // Just add to the buffer
+            fullResponse += chunk;
         }
 
-        // --- 4. Final Cleanup ---
-        // Just in case the loop stopped, we clear the interval
-        // and run one final render to make sure we have
-        // the *very last* chunk of text.
         clearInterval(renderInterval);
         renderMarkdown(); // Final render
 
     } catch (error) {
         console.error('Error fetching response:', error);
-        
-        // Stop the loop on error
         isStreamDone = true;
         clearInterval(renderInterval);
-        
         aiMessageDiv.textContent = `Sorry, an error occurred: ${error.message}`;
     }
 }
-
