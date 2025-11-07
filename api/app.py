@@ -109,10 +109,10 @@ College: 7.8 CGPA
 """
 
 try:
-    chat = ChatGroq(
+    chat = ChatFireworks(
         temperature=0.2,
         model_name="accounts/fireworks/models/llama-v2-7b-chat",
-        groq_api_key=os.environ.get("FIREWORKS_API_KEY")
+        fireworks_api_key=os.environ.get("FIREWORKS_API_KEY")
     )
 
     prompt = ChatPromptTemplate.from_messages([
@@ -121,11 +121,11 @@ try:
     ])
 
     chain = prompt | chat
-    print("Groq chain initialized successfully.")
+    print("Fireworks chain initialized successfully.")
 
 except Exception as e:
-    print(f"Error initializing Groq chain: {e}")
-    print("!!! MAKE SURE YOU HAVE SET THE 'GROQ_API_KEY' ENVIRONMENT VARIABLE IN VERCEL !!!")
+    print(f"Error initializing Fireworks chain: {e}")
+    print("!!! MAKE SURE YOU HAVE SET THE 'FIREWORKS_API_KEY' ENVIRONMENT VARIABLE IN VERCEL !!!")
     chain = None
 
 
