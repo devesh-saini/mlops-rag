@@ -1,4 +1,3 @@
 flask
 langchain-core
 langchain-fireworks
-vercel-flask
