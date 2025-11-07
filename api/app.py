@@ -111,7 +111,7 @@ College: 7.8 CGPA
 try:
     chat = ChatFireworks(
         temperature=0.2,
-        model_name="accounts/fireworks/models/llama-v2-7b-chat",
+        model_name="accounts/fireworks/models/llama-v3-8b-instruct",
         fireworks_api_key=os.environ.get("FIREWORKS_API_KEY")
     )
 
