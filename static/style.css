@@ -32,9 +32,9 @@ header {
     width: 100%;
     height: 100%;
     visibility: visible;
-    align-text: center;
+    text-align: center;
     position: relative;
-    padding-top: 72px;
+    /* padding-top: 72px; */
     margin-bottom: 0px; /* Add some space below header */
 }
 
@@ -79,14 +79,24 @@ h1 {
     margin: 20px 0;
 }
 .chat-area {
-    max-width: 800px;
-    height: 0px;
+    margin: 24px;
+    padding: 16px;
+    /* width: 100%; */
+    width: 800px;
+    min-height: 20vh;
+    max-height: 52vh;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    overflow-y: auto; /* Allow scrolling */
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    overflow-y:auto; /* Allow scrolling */
+    overflow-x:hidden; /* Allow scrolling */
     padding: 16px;
     box-sizing: border-box; /* Ensures padding doesn't break layout */
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 24px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
 /* Styles for the chat messages */

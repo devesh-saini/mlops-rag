@@ -1,3 +1,8 @@
 flask
 langchain-core
-langchain-fireworks
+langchain-ollama
+langchain-chroma
+chromadb
+langchain-community
+langchain-text-splitters
+pypdf

@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-let isFirstMessage = true; // To track if we need to run the 'expand' animation
+let isFirstMessage = true;
 
 // --- 3. REFACTORED: The old 'handleChatSubmit' is now 'submitQuery' ---
 // This new "master" function can be called by *any* part of our code.
@@ -58,7 +58,7 @@ function submitQuery(userQuery) {
         return; // Don't send empty messages
     }
 
-    // Run the 'expand' animation only on the first message
+    // Keep layout fixed; no first-message transition animation.
     if (isFirstMessage) {
         expandUI();
         isFirstMessage = false;
@@ -105,31 +105,7 @@ function handleChatSubmit(event) {
 // --- 5. UNCHANGED: Your other functions ---
 
 function expandUI() {
-    // This is your animation code, unchanged
-    const header = document.querySelector("header");
-    header.style.transition = "ease 0.5s";
-    header.style.color = "white";
-    header.style.transform = "translateY(-25vh)";
-
-    const main = document.querySelector("main");
-    main.style.transition = "ease 0.5s";
-    main.style.transform = "translateY(-30vh)";
-
-    const nav = document.querySelector("nav");
-    nav.style.transform = "translateY(-30vh)";
-    nav.style.transition = "ease 0.5s";
-
-    const avatar = document.querySelector(".avatar");
-    avatar.style.transform = "translateY(8vh)";
-    avatar.style.transition = "ease-out 0.5s";
-    avatar.style.width = "160px";
-
-    let chat_area = document.querySelector(".chat-area");
-    chat_area.style.transition = "ease 0.5s";
-    chat_area.style.borderRadius = "24px";
-    chat_area.style.minHeight = "56vh";
-    chat_area.style.margin = "16px";
-    chat_area.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.07)";
+    // Intentionally empty: no UI transition/movement.
 }
 
 async function fetchResult(userQuery, aiMessageDiv) {
