@@ -24,7 +24,7 @@ If the answer is not present in the context, say you could not find it in the PD
 """
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PDF_PATH = os.path.join(BASE_DIR, "Practical MLOps.pdf")
+PDF_PATH = os.path.join(BASE_DIR, "devops-2-0-toolkit")
 CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
 COLLECTION_NAME = "practical_mlops"
 LLM_MODEL = os.environ.get("OLLAMA_LLM_MODEL", "mistral")
